@@ -1,29 +1,31 @@
-fn bubble_sort<T: Ord>(arr: &mut [T]) {
-    if arr.is_empty() {
-        return;
-    }
-    let mut sorted = false;
-    let mut n = arr.len() - 1;
-    println!("format {n} test");
-
-    while !sorted {
-        sorted = true;
-        for i in 0..n {
-            println!(); // prints just a newline
-            println!("{i} index");
-
-            if arr[i] > arr[i + i] {
-                arr.swap(i, i + 1);
-                sorted = false
-            }
-        }
-        n -= 1;
-    }
-}
+use rand::Rng;
+use std::{cmp::Ordering, io};
 
 fn main() {
-    println!("Hello");
-    let mut ve1 = vec![6, 5, 4, 3, 2, 1];
+    println!("Guess Game");
 
-    bubble_sort(&mut ve1);
+    let secret_number = rand::thread_rng().gen_range(1..=100);
+    println!("The secret number is: {secret_number}");
+
+    loop {
+        println!("Please input your guess.");
+        let mut guess = String::new();
+
+        io::stdin()
+            .read_line(&mut guess)
+            .expect("Failed to read line");
+
+        let guess: u32 = guess.trim().parse().expect("Please type a number!");
+
+        println!("You guessed: {guess}");
+
+        match guess.cmp(&secret_number) {
+            Ordering::Less => println!("Too small!"),
+            Ordering::Greater => println!("Too high"),
+            Ordering::Equal => {
+                println!("You win!, congrats");
+                break;
+            }
+        }
+    }
 }
